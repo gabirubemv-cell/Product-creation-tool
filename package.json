@@ -1,0 +1,24 @@
+{
+  "name": "shopify-product-generator",
+  "version": "1.0.0",
+  "description": "Generate Shopify product collections with complete data",
+  "main": "generate-products.js",
+  "type": "module",
+  "scripts": {
+    "generate": "node generate-products.js",
+    "start": "node generate-products.js"
+  },
+  "keywords": [
+    "shopify",
+    "products",
+    "generator",
+    "csv"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@shopify/shopify-api": "^12.1.2",
+    "dotenv": "^17.2.3",
+    "openai": "^6.9.1"
+  }
+}

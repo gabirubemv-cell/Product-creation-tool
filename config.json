@@ -1,0 +1,57 @@
+{
+    "productCount": 10,
+    "collections": [
+        {
+            "name": "Summer Collection",
+            "type": "Apparel",
+            "tags": [
+                "summer",
+                "casual",
+                "new-arrival"
+            ]
+        },
+        {
+            "name": "Winter Collection",
+            "type": "Apparel",
+            "tags": [
+                "winter",
+                "warm",
+                "cozy"
+            ]
+        },
+        {
+            "name": "Accessories",
+            "type": "Accessories",
+            "tags": [
+                "accessories",
+                "trending"
+            ]
+        }
+    ],
+    "variants": {
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "colors": [
+            "Black",
+            "White",
+            "Navy",
+            "Gray"
+        ]
+    },
+    "pricing": {
+        "min": 20,
+        "max": 100
+    },
+    "stock": {
+        "min": 10,
+        "max": 50
+    },
+    "vendor": "Your Store",
+    "useAIImages": true,
+    "enableShopifyUpload": true,
+    "imagePlaceholder": "https://via.placeholder.com/800x800"
+}
