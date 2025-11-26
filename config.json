@@ -1,5 +1,5 @@
 {
-    "productCount": 10,
+    "productCount": 5,
     "collections": [
         {
             "name": "Summer Collection",
@@ -8,6 +8,24 @@
                 "summer",
                 "casual",
                 "new-arrival"
+            ]
+        },
+        {
+            "name": "Spring Collection",
+            "type": "Apparel",
+            "tags": [
+                "spring",
+                "fresh",
+                "lightweight"
+            ]
+        },
+        {
+            "name": "Autumn Collection",
+            "type": "Apparel",
+            "tags": [
+                "autumn",
+                "fall",
+                "layering"
             ]
         },
         {

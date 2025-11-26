@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import OpenAI from 'openai';
 import '@shopify/shopify-api/adapters/node';
 import { shopifyApi, Session } from '@shopify/shopify-api';
+import readline from 'readline';
 
 dotenv.config();
 
@@ -160,6 +161,53 @@ async function uploadProductToShopify(productData, variants) {
   }
 }
 
+// Prompt user to select collections
+async function selectCollections() {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+
+  const question = (query) => new Promise((resolve) => rl.question(query, resolve));
+
+  console.log('\n📋 Available Collections:');
+  console.log('========================\n');
+
+  config.collections.forEach((collection, index) => {
+    console.log(`${index + 1}. ${collection.name} (${collection.type})`);
+    console.log(`   Tags: ${collection.tags.join(', ')}\n`);
+  });
+
+  console.log(`${config.collections.length + 1}. All Collections\n`);
+
+  const answer = await question('Select collections (e.g., "1,3,5" or "7" for all): ');
+  rl.close();
+
+  const selections = answer.trim().split(',').map(s => parseInt(s.trim()));
+
+  // Check if "All" was selected
+  if (selections.includes(config.collections.length + 1)) {
+    console.log('\n✅ Selected: All Collections\n');
+    return config.collections;
+  }
+
+  // Filter selected collections
+  const selectedCollections = selections
+    .filter(num => num >= 1 && num <= config.collections.length)
+    .map(num => config.collections[num - 1]);
+
+  if (selectedCollections.length === 0) {
+    console.log('\n⚠️ No valid collections selected. Using all collections.\n');
+    return config.collections;
+  }
+
+  console.log('\n✅ Selected Collections:');
+  selectedCollections.forEach(c => console.log(`   - ${c.name}`));
+  console.log('');
+
+  return selectedCollections;
+}
+
 // Generate CSV row
 function generateCSVRow(data) {
   return data.map(field => {
@@ -175,10 +223,13 @@ function generateCSVRow(data) {
 async function generateProducts() {
   console.log('🚀 Starting Shopify Product Generator...\n');
 
-  const products = [];
-  const productsPerCollection = Math.ceil(config.productCount / config.collections.length);
+  // Let user select collections
+  const selectedCollections = await selectCollections();
 
-  for (const collection of config.collections) {
+  const products = [];
+  const productsPerCollection = Math.ceil(config.productCount / selectedCollections.length);
+
+  for (const collection of selectedCollections) {
     if (products.length >= config.productCount) break;
 
     const count = Math.min(productsPerCollection, config.productCount - products.length);
@@ -299,7 +350,7 @@ async function generateProducts() {
   console.log(`\n📊 Summary:`);
   console.log(`   - Total products: ${config.productCount}`);
   console.log(`   - Total variants: ${products.length}`);
-  console.log(`   - Collections: ${config.collections.length}`);
+  console.log(`   - Collections: ${selectedCollections.length}`);
   console.log(`   - Sizes per product: ${config.variants.sizes.length}`);
   console.log(`\n🎉 Ready to upload to Shopify!\n`);
 }
